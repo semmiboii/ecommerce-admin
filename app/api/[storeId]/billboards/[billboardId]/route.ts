@@ -96,16 +96,19 @@ export async function DELETE(
       },
     });
 
-    const billboard = await prismadb.billboard.deleteMany({
+    if (!storeByUserId) {
+      return new NextResponse("Unauthorized", { status: 405 });
+    }
+
+    const billboard = await prismadb.billboard.delete({
       where: {
-        id: params.storeId,
-        userId,
+        id: params.billboardId,
       },
     });
 
     return NextResponse.json(billboard);
   } catch (error) {
-    console.log("[STORE_DELETE]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    console.log("[BILLBOARD_DELETE]", error);
+    return new NextResponse("Internal error", { status: 500 });
   }
 }
