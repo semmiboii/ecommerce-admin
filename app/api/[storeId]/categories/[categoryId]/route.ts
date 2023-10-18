@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import { Store } from "@prisma/client";
 import prismadb from "@/lib/prismadb";
 
 export async function GET(
@@ -15,6 +14,9 @@ export async function GET(
     const category = await prismadb.category.findUnique({
       where: {
         id: params.categoryId,
+      },
+      include: {
+        billboard: true,
       },
     });
 
@@ -60,6 +62,10 @@ export async function PATCH(
         userId,
       },
     });
+
+    if (!storeByUserId) {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
 
     const category = await prismadb.category.updateMany({
       where: {
