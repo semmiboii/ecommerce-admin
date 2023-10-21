@@ -32,7 +32,7 @@ export const columns: ColumnDef<OrderColumn>[] = [
     header: "Total Price",
   },
   {
-    accessorKey: "createdAt",
-    header: "Date",
+    accessorKey: "isPaid",
+    header: "Paid",
   },
 ];
