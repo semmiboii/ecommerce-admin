@@ -4,8 +4,14 @@ import MainNav from "@/components/main-nav";
 import StoreSwitcher from "@/components/store-switcher";
 import prismadb from "@/lib/prismadb";
 import { ThemeToggle } from "./theme-toggle";
+import { redirect } from "next/navigation";
+
 const Navbar = async () => {
   const { userId } = auth();
+
+  if (!userId) {
+    redirect("/sign-in");
+  }
 
   const stores = await prismadb.store.findMany({
     where: {
